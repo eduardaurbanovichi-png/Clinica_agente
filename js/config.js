@@ -5,8 +5,8 @@
 
 const DEFAULT_CONFIG = {
     clinicName: "Clínica Urbanovichi",
-    openRouterKey: "", // Deixado em branco para que o usuário insira via modal ou direto no código
-    model: "google/gemini-2.5-flash",
+    openRouterKey: "", // Sua chave sk-or-...
+    model: "meta-llama/llama-3-8b-instruct:free", // Modelo excelente e 100% gratuito
     theme: "light"
 };
 
