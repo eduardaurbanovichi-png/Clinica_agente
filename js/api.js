@@ -10,7 +10,7 @@ Mantenha suas respostas claras, acolhedoras e organizadas.`;
     async sendMessage(messagesHist) {
         const config = ConfigManager.get();
         
-        // Recupera a chave salva nas configurações do navegador
+        // Recupera a chave gsk_ salva nas configurações do navegador
         const apiKey = config.openRouterKey; 
         
         if (!apiKey) {
