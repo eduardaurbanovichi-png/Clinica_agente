@@ -53,17 +53,19 @@ const UI = {
     /**
      * Renderiza o efeito de máquina de escrever letra por letra.
      */
-    typeWriter(element, text, speed = 8, callback = null) {
+ typeWriter(element, text, speed = 8, callback = null) {
         let i = 0;
         element.innerHTML = "";
         
+        // Garante que 'text' seja uma string válida para evitar o erro de .length
+        const safeText = typeof text === "string" ? text : String(text || "");
+        
         function type() {
-            if (i < text.length) {
-                // Suporta quebras de linha básicas trocando por <br>
-                if (text.substr(i, 1) === '\n') {
+            if (i < safeText.length) {
+                if (safeText.substr(i, 1) === '\n') {
                     element.innerHTML += '<br>';
                 } else {
-                    element.innerHTML += text.charAt(i);
+                    element.innerHTML += safeText.charAt(i);
                 }
                 i++;
                 UI.scrollToBottom();
