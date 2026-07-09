@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Urbanovichi — Agente Inteligente de Atendimento</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top shadow-sm main-navbar">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+                <div class="brand-icon-wrapper">
+                    <i class="fa-solid fa-user-md-chat brand-icon text-primary"></i>
+                </div>
+                <span class="fw-bold text-gradient" id="nav-clinic-name">Clínica Urbanovichi</span>
+            </a>
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-icon" id="btn-theme-toggle" title="Alternar Tema" aria-label="Alternar Tema">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <button class="btn btn-icon" id="btn-clear-chat" title="Limpar Conversa" aria-label="Limpar Conversa">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+                <button class="btn btn-icon" id="btn-settings-toggle" data-bs-toggle="modal" data-bs-target="#settingsModal" title="Configurações" aria-label="Configurações">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container-fluid main-layout px-md-4">
+        <div class="row h-100 g-4">
+            
+            <section class="col-xl-3 col-lg-4 d-flex flex-column gap-3 sidebar-section" data-aos="fade-right">
+                <div class="card premium-card header-card p-4 text-center">
+                    <div class="avatar-container mb-3 mx-auto">
+                        <div class="avatar-pulse"></div>
+                        <i class="fa-solid fa-stethoscope avatar-icon text-white"></i>
+                    </div>
+                    <h1 class="h3 fw-bold mb-1 header-title">Urbanovichi</h1>
+                    <h2 class="h6 text-muted mb-3">Agente Inteligente de Atendimento</h2>
+                    <p class="text-sm text-secondary-custom mb-0">
+                        Olá! Sou o Urbanovichi, assistente virtual da clínica. Estou aqui para ajudar você com informações, exames, convênios, especialidades, horários e orientações gerais.
+                    </p>
+                </div>
+
+                <div class="card premium-card flex-grow-1 p-3 d-flex flex-column overflow-hidden">
+                    <h3 class="h6 fw-bold px-2 mb-3 text-uppercase text-tracking">Ações Rápidas</h3>
+                    <div class="row row-cols-2 g-2 quick-actions-container overflow-y-auto pe-1">
+                        <div class="col"><button class="btn quick-action-btn w-100 h-100" data-prompt="Gostaria de agendar uma consulta."><i class="fa-solid fa-calendar-check text-primary mb-2 d-block fs-4"></i><span>Agendar Consulta</span></button></div>
+                        <div class="col"><button class="btn quick-action-btn w-100 h-100" data-prompt="Quais são as especialidades atendidas na clínica?"><i class="fa-solid fa-user-doctor text-primary mb-2 d-block fs-4"></i><span>Especialidades</span></button></div>
+                        <div class="col"><button class="btn quick-action-btn w-100 h-100" data-prompt="Quais convênios e planos de saúde vocês aceitam?"><i class="fa-solid fa-id-card text-primary mb-2 d-block fs-4"></i><span>Convênios</span></button></div>
+                        <div class="col"><button class="btn quick-action-btn w-100 h-100" data-prompt="Quais exames são realizados na clínica?"><i class="fa-solid fa-flask text-primary mb-2 d-block fs-4"></i><span>Exames</span></button></div>
+                        <div class="col"><button class="btn quick-action-btn w-100 h-100" data-prompt="Como posso acessar os resultados dos meus exames?"><i class="fa-solid fa-file-medical text-primary mb-2 d-block fs-4"></i><span>Resultados</span></button></div>
+                        <div class="col"><button class="btn quick-action-btn w-100 h-100" data-prompt="Quais os horários de atendimento da clínica?"><i class="fa-solid fa-clock text-primary mb-2 d-block fs-4"></i><span>Horários</span></button></div>
+                        <div class="col"><button class="btn quick-action-btn w-100 h-100" data-prompt="Qual é o endereço e localização da clínica?"><i class="fa-solid fa-location-dot text-primary mb-2 d-block fs-4"></i><span>Endereço</span></button></div>
+                        <div class="col"><button class="btn quick-action-btn w-100 h-100" data-prompt="Quais são os canais de contato e WhatsApp da clínica?"><i class="fa-brands fa-whatsapp text-primary mb-2 d-block fs-4"></i><span>Contato</span></button></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="col-xl-9 col-lg-8 d-flex flex-column chat-section" data-aos="fade-up">
+                <div class="card premium-card chat-card flex-grow-1 d-flex flex-column overflow-hidden">
+                    
+                    <div class="chat-body flex-grow-1 p-4 overflow-y-auto" id="chat-messages">
+                        </div>
+
+                    <div class="typing-indicator-wrapper px-4 py-2 d-none" id="typing-indicator">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="mini-avatar text-center"><i class="fa-solid fa-user-md-chat text-primary fs-6"></i></div>
+                            <div class="typing-bubble">
+                                <span></span><span></span><span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-footer p-3 bg-glass border-top">
+                        <form id="chat-form" class="input-group gap-2">
+                            <button type="button" class="btn btn-action-round" id="btn-mic" title="Falar por voz">
+                                <i class="fa-solid fa-microphone"></i>
+                            </button>
+                            <input type="text" id="chat-input" class="form-control chat-input-field" placeholder="Digite sua dúvida ou instrução aqui..." autocomplete="off" required>
+                            <button type="submit" class="btn btn-send-round" id="btn-send" title="Enviar Mensagem">
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </main>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
+        <div id="app-toast" class="toast align-items-center border-0 shadow" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2" id="toast-text">
+                    </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content premium-modal">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold" id="settingsModalLabel"><i class="fa-solid fa-sliders text-primary me-2"></i>Painel de Configurações</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="settings-form">
+                        <div class="mb-3">
+                            <label for="cfg-clinic-name" class="form-label fw-semibold text-sm">Nome da Clínica</label>
+                            <input type="text" class="form-control" id="cfg-clinic-name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="cfg-api-key" class="form-label fw-semibold text-sm">Chave OpenRouter API</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="cfg-api-key" placeholder="sk-or-...">
+                                <button class="btn btn-outline-secondary" type="button" id="btn-toggle-key-visibility"><i class="fa-solid fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cfg-model" class="form-label fw-semibold text-sm">Modelo de Linguagem (IA)</label>
+                            <select class="form-select" id="cfg-model">
+                                <option value="google/gemini-2.5-flash">Google Gemini 2.5 Flash (Recomendado)</option>
+                                <option value="meta-llama/llama-3-8b-instruct:free">Meta Llama 3 8B (Gratuito)</option>
+                                <option value="openai/gpt-4o-mini">OpenAI GPT-4o Mini</option>
+                            </select>
+                        </div>
+                        <hr class="my-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button type="button" class="btn btn-outline-danger btn-sm" id="btn-factory-reset">
+                                <i class="fa-solid fa-triangle-exclamation me-1"></i> Redefinir Tudo
+                            </button>
+                            <button type="submit" class="btn btn-primary px-4">Salvar Configurações</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-3 text-muted text-xs w-100">
+        <div><strong>Urbanovichi AI</strong> • Assistente Inteligente da Clínica • Powered by OpenRouter • v1.0</div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
