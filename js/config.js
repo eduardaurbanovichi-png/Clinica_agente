@@ -1,43 +1,33 @@
-/**
- * ARQUIVO DE CONFIGURAÇÃO DO AGENTE URBANOVICHI
- * Controla e inicializa o localStorage e as definições globais da aplicação.
- */
-
-const DEFAULT_CONFIG = {
-    clinicName: "Clínica Urbanovichi",
-    openRouterKey: "", // Aqui vai a sua chave gsk_ do Groq
-    model: "llama3-8b-8192", // Modelo ultra-rápido do Groq
-    theme: "light"
-};
-
 const ConfigManager = {
-    init() {
-        if (!localStorage.getItem("urbanovichi_config")) {
-            localStorage.setItem("urbanovichi_config", JSON.stringify(DEFAULT_CONFIG));
-        }
+    STORAGE_KEY: "urbanovichi_chat_config",
+
+    // Configurações padrão iniciais
+    defaultConfig: {
+        clinicName: "Clínica Urbanovichi",
+        openRouterKey: "", // Onde o usuário digita/salva a chave gsk_
+        model: "llama3-8b-8192", // Modelo padrão, estável e rápido do Groq
+        theme: "light",
+        welcomeMessage: "Olá! Sou o Urbanovichi, assistente virtual da clínica. Como posso ajudar você hoje?"
     },
 
+    // Obtém as configurações salvas no navegador ou retorna as padrões
     get() {
-        this.init();
+        const saved = localStorage.getItem(this.STORAGE_KEY);
+        if (!saved) {
+            return this.defaultConfig;
+        }
         try {
-            return JSON.parse(localStorage.getItem("urbanovichi_config"));
+            return { ...this.defaultConfig, ...JSON.parse(saved) };
         } catch (e) {
-            return DEFAULT_CONFIG;
+            return this.defaultConfig;
         }
     },
 
+    // Salva novas alterações feitas pelo usuário
     save(newConfig) {
         const current = this.get();
         const updated = { ...current, ...newConfig };
-        localStorage.setItem("urbanovichi_config", JSON.stringify(updated));
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(updated));
         return updated;
-    },
-
-    reset() {
-        localStorage.setItem("urbanovichi_config", JSON.stringify(DEFAULT_CONFIG));
-        return DEFAULT_CONFIG;
     }
 };
-
-// Inicialização imediata ao carregar o script
-ConfigManager.init();
