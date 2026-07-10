@@ -1,25 +1,22 @@
 const Chat = {
-    // Renderiza a mensagem inicial de boas-vindas da clínica
+    // Renderiza a mensagem de boas-vindas inicial
     renderInitialMessage() {
         const config = ConfigManager.get();
-        // Se por acaso a welcomeMessage não existir no config.js, define um texto padrão
         const welcomeText = config.welcomeMessage || "Olá! Sou o Urbanovichi, assistente virtual da clínica. Como posso ajudar você hoje?";
-        
         this.appendBubble(welcomeText, false);
     },
 
-    // Adiciona um balão de mensagem no corpo do chat
+    // Adiciona uma nova bolha de conversa no chat-container
     appendBubble(text, isUser = false) {
         const chatContainer = document.getElementById("chat-container");
         if (!chatContainer) return;
 
-        // TRAVA DE SEGURANÇA: Garante que 'text' seja sempre uma string válida, evitando erros de .replace()
+        // Proteção contra undefined ou nulos para evitar quebra com .replace()
         const safeText = typeof text === "string" ? text : String(text || "");
 
-        // Formata as quebras de linha para tags HTML <br>
+        // Converte quebras de linha normais em tags <br> para formatação HTML correta
         const formattedText = safeText.replace(/\n/g, '<br>');
 
-        // Cria a estrutura do balão de mensagem
         const bubbleWrapper = document.createElement("div");
         bubbleWrapper.classList.add("d-flex", "mb-3", isUser ? "justify-content-end" : "justify-content-start");
 
@@ -28,7 +25,7 @@ const Chat = {
         if (isUser) {
             bubbleWrapper.innerHTML = `
                 <div class="d-flex align-items-end flex-column">
-                    <div class="bubble bubble-user p-3 text-white rounded-3 mb-1" style="max-width: 75%; background-color: var(--bubble-user-bg, #0d6efd);">
+                    <div class="bubble bubble-user p-3 text-white rounded-3 mb-1" style="max-width: 75; background-color: #0d6efd;">
                         ${formattedText}
                     </div>
                     <small class="text-muted" style="font-size: 0.75rem;">${currentTime}</small>
@@ -37,11 +34,11 @@ const Chat = {
         } else {
             bubbleWrapper.innerHTML = `
                 <div class="d-flex align-items-start flex-row">
-                    <div class="avatar me-2 rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 40px; height: 40px; background-color: #1e293b;">
+                    <div class="avatar me-2 rounded-circle d-flex align-items-center justify-content-center text-white" style="width: 40px; height: 40px; background-color: #1e293b; flex-shrink: 0;">
                         🤖
                     </div>
                     <div class="d-flex align-items-start flex-column">
-                        <div class="bubble bubble-ai p-3 rounded-3 mb-1" style="max-width: 75%; background-color: var(--bubble-ai-bg, #f1f5f9); color: var(--bubble-ai-text, #1f2937);">
+                        <div class="bubble bubble-ai p-3 rounded-3 mb-1" style="max-width: 75%; background-color: #f1f5f9; color: #1f2937;">
                             <span class="ai-text-content"></span>
                         </div>
                         <small class="text-muted" style="font-size: 0.75rem;">${currentTime}</small>
@@ -52,7 +49,7 @@ const Chat = {
 
         chatContainer.appendChild(bubbleWrapper);
 
-        // Se for a IA respondendo, aplica o efeito de máquina de escrever (typeWriter)
+        // Aplica o efeito clássico de digitação se a mensagem for gerada pela IA
         if (!isUser) {
             const textSpan = bubbleWrapper.querySelector(".ai-text-content");
             if (textSpan && typeof UI !== 'undefined' && UI.typeWriter) {
@@ -66,7 +63,7 @@ const Chat = {
         }
     },
 
-    // Limpa o histórico visual do chat na tela
+    // Limpa a tela limpando os nós do container
     clear() {
         const chatContainer = document.getElementById("chat-container");
         if (chatContainer) {
@@ -75,10 +72,3 @@ const Chat = {
         }
     }
 };
-
-// Inicializa a mensagem de boas-vindas assim que a página terminar de carregar
-document.addEventListener("DOMContentLoaded", () => {
-    if (typeof Chat !== 'undefined' && Chat.renderInitialMessage) {
-        Chat.renderInitialMessage();
-    }
-});
