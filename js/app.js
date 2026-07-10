@@ -2,59 +2,59 @@ document.addEventListener("DOMContentLoaded", () => {
     const chatForm = document.getElementById("chat-form");
     const messageInput = document.getElementById("message-input");
 
-    // Inicializa a mensagem de boas-vindas usando o objeto correto
+    // Roda a mensagem inicial imediatamente no carregamento da DOM
     if (typeof Chat !== 'undefined' && Chat.renderInitialMessage) {
         Chat.renderInitialMessage();
     }
 
-    // Verifica se os elementos do formulário existem na tela
+    // Valida se os elementos vitais do formulário estão no HTML carregado
     if (!chatForm || !messageInput) {
-        console.error("Erro: Elementos do formulário de chat não foram encontrados no HTML.");
+        console.error("Erro Crítico: Elementos do formulário (chat-form ou message-input) não existem no DOM.");
         return;
     }
 
-    // Gerencia o envio da mensagem do usuário
+    // Dispara a rotina de envio de mensagens
     async function handleUserMessage(event) {
-        event.preventDefault(); // Impede o recarregamento da página
+        event.preventDefault(); // Impede o envio nativo que recarrega a página
 
         const messageText = messageInput.value.trim();
-        if (!messageText) return; // Retorna se o texto estiver vazio
+        if (!messageText) return; // Cancela se o campo contiver apenas espaços em branco
 
-        // 1. Exibe o balão do usuário na tela
+        // 1. Injeta o balão visual do usuário na tela
         if (typeof Chat !== 'undefined' && Chat.appendBubble) {
             Chat.appendBubble(messageText, true);
         }
         
-        // Limpa o campo de entrada de texto
+        // Limpa a caixa de texto para a próxima mensagem
         messageInput.value = "";
 
-        // 2. Monta o histórico que será enviado para a API
+        // 2. Encapsula o array de histórico para repassar à API
         const messagesHist = [
             { role: "user", content: messageText }
         ];
 
         try {
-            // 3. Envia para o Groq através do api.js
+            // 3. Encaminha para o módulo de integração
             if (typeof OpenRouterAPI !== 'undefined' && OpenRouterAPI.sendMessage) {
                 const response = await OpenRouterAPI.sendMessage(messagesHist);
                 
-                // 4. Exibe a resposta final do agente na tela
+                // 4. Exibe o resultado/resposta final da IA na tela
                 if (typeof Chat !== 'undefined' && Chat.appendBubble) {
                     Chat.appendBubble(response, false);
                 }
             } else {
                 if (typeof Chat !== 'undefined' && Chat.appendBubble) {
-                    Chat.appendBubble("⚠️ Erro Interno: O arquivo de integração da API (api.js) não respondeu.", false);
+                    Chat.appendBubble("⚠️ Erro Estrutural: O arquivo js/api.js não foi carregado corretamente.", false);
                 }
             }
         } catch (error) {
-            console.error("Erro ao processar mensagem:", error);
+            console.error("Falha ao gerenciar envio:", error);
             if (typeof Chat !== 'undefined' && Chat.appendBubble) {
-                Chat.appendBubble("⚠️ Falha ao tentar obter resposta do agente.", false);
+                Chat.appendBubble("⚠️ Ocorreu uma falha interna inesperada ao processar o chat.", false);
             }
         }
     }
 
-    // Ativa o envio ao clicar no botão ou pressionar Enter
+    // Adiciona o listener para monitorar o submit
     chatForm.addEventListener("submit", handleUserMessage);
 });
